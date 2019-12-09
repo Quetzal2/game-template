@@ -20,4 +20,4 @@ fern = {version = "0.5", features = ["colored"] }
 chrono = "0.4"
 #specs = "0.14"
 #specs-derive = "0.4"
-legion = {git="https://github.com/TomGillen/legion", rev="8628b227bcbe57582fffb5e80e73c634ec4eebd9"}
+legion = "0.2.1"

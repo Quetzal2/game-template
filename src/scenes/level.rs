@@ -12,13 +12,13 @@ use crate::resources;
 use crate::scenes;
 //use crate::systems::*;
 use crate::world::World;
-use crate::stages;
+//use crate::stages;
 use legion::prelude::IntoQuery;
 
 pub struct LevelScene {
     done: bool,
     kiwi: warmy::Res<resources::Image>,
-    dispatcher: legion_p::SystemScheduler<stages::Stages>//specs::Dispatcher<'static, 'static>,
+    dispatcher: legion_p::Schedule//specs::Dispatcher<'static, 'static>,
 }
 
 impl LevelScene {
@@ -39,8 +39,7 @@ impl LevelScene {
         }
     }
 
-    fn register_systems() -> legion_p::SystemScheduler<stages::Stages> { //specs::Dispatcher<'static, 'static> {
-        let mut system_dispatcher = legion_p::SystemScheduler::new();
+    fn register_systems() -> legion_p::Schedule { //specs::Dispatcher<'static, 'static> {
         let update_positions = legion_p::SystemBuilder::new("update_positions")
             .with_query(<(legion_p::Write<c::Position>, legion_p::Read<c::Motion>)>::query())
             .build(|_, mut world, _, query| {
@@ -48,8 +47,9 @@ impl LevelScene {
                     pos.0 += motion.velocity;
                 }
             });
-
-        system_dispatcher.add_system(stages::Stages::Update, update_positions);
+        let mut system_dispatcher = legion_p::Schedule::builder()
+            .add_system(update_positions)
+            .build();
         /*specs::DispatcherBuilder::new()
             .with(MovementSystem, "sys_movement", &[])
             .build()*/

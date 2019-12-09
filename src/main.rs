@@ -14,7 +14,7 @@ mod scenes;
 mod types;
 mod util;
 mod world;
-mod stages;
+//mod stages;
 
 struct MainState {
     scenes: scenes::Stack,
