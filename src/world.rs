@@ -2,6 +2,8 @@ use crate::{components, input, resources, util};
 
 use log::*;
 //use specs::{self, world::Builder};
+use legion::prelude as legion_p;
+
 use warmy;
 
 use std::path;
@@ -9,7 +11,7 @@ use std::path;
 pub struct World {
     pub resources: resources::Store,
     pub input: input::State,
-    pub specs_world: specs::World,
+    pub specs_world: legion_p::World,
 }
 
 impl World {
@@ -28,8 +30,9 @@ impl World {
         let store = warmy::Store::new(opt)
             .expect("Could not create asset store?  Does the directory exist?");
 
-        let mut w = specs::World::new();
-        components::register_components(&mut w);
+        let mut universe = legion_p::Universe::new();
+        let mut w = universe.create_world();//specs::World::new();
+        //components::register_components(&mut w);
 
         let mut the_world = Self {
             resources: store,
@@ -40,13 +43,24 @@ impl World {
         // Make a test entity.
         the_world
             .specs_world
-            .create_entity()
+            .insert(
+                (),
+                vec![
+                    (components::Position(util::point2(0.0, 0.0)),
+                     components::Motion {
+                        velocity: util::vec2(1.0, 1.0),
+                        acceleration: util::vec2(0.0, 0.0),
+                     }
+                    )
+                ]
+            );
+            /*.create_entity()
             .with(components::Position(util::point2(0.0, 0.0)))
             .with(components::Motion {
                 velocity: util::vec2(1.0, 1.0),
                 acceleration: util::vec2(0.0, 0.0),
             })
-            .build();
+            .build();*/
 
         the_world
     }

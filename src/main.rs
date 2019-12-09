@@ -10,10 +10,11 @@ mod components;
 mod input;
 mod resources;
 mod scenes;
-mod systems;
+//mod systems;
 mod types;
 mod util;
 mod world;
+mod stages;
 
 struct MainState {
     scenes: scenes::Stack,
