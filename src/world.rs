@@ -31,8 +31,7 @@ impl World {
             .expect("Could not create asset store?  Does the directory exist?");
 
         let mut universe = legion_p::Universe::new();
-        let mut w = universe.create_world();//specs::World::new();
-        //components::register_components(&mut w);
+        let mut w = universe.create_world();
 
         let mut the_world = Self {
             resources: store,
@@ -54,13 +53,6 @@ impl World {
                     )
                 ]
             );
-            /*.create_entity()
-            .with(components::Position(util::point2(0.0, 0.0)))
-            .with(components::Motion {
-                velocity: util::vec2(1.0, 1.0),
-                acceleration: util::vec2(0.0, 0.0),
-            })
-            .build();*/
 
         the_world
     }

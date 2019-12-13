@@ -2,7 +2,6 @@ use ggez;
 use ggez::graphics;
 use ggez_goodies::scene;
 use log::*;
-//use specs::{self, Join};
 use legion::prelude as legion_p;
 use warmy;
 
@@ -10,15 +9,13 @@ use crate::components as c;
 use crate::input;
 use crate::resources;
 use crate::scenes;
-//use crate::systems::*;
 use crate::world::World;
-//use crate::stages;
 use legion::prelude::IntoQuery;
 
 pub struct LevelScene {
     done: bool,
     kiwi: warmy::Res<resources::Image>,
-    dispatcher: legion_p::Schedule//specs::Dispatcher<'static, 'static>,
+    dispatcher: legion_p::Schedule
 }
 
 impl LevelScene {
@@ -30,7 +27,6 @@ impl LevelScene {
             .unwrap();
 
         let mut dispatcher = Self::register_systems();
-        //dispatcher.setup(&mut world.specs_world.res);
 
         LevelScene {
             done,
@@ -39,7 +35,7 @@ impl LevelScene {
         }
     }
 
-    fn register_systems() -> legion_p::Schedule { //specs::Dispatcher<'static, 'static> {
+    fn register_systems() -> legion_p::Schedule {
         let update_positions = legion_p::SystemBuilder::new("update_positions")
             .with_query(<(legion_p::Write<c::Position>, legion_p::Read<c::Motion>)>::query())
             .build(|_, mut world, _, query| {
@@ -50,9 +46,6 @@ impl LevelScene {
         let mut system_dispatcher = legion_p::Schedule::builder()
             .add_system(update_positions)
             .build();
-        /*specs::DispatcherBuilder::new()
-            .with(MovementSystem, "sys_movement", &[])
-            .build()*/
         system_dispatcher
     }
 }
@@ -77,15 +70,6 @@ impl scene::Scene<World, input::Event> for LevelScene {
                 graphics::DrawParam::default().dest(p.0),
             )?;
         }
-        /*
-        let pos = gameworld.specs_world.read_storage::<c::Position>();
-        for p in pos.join() {
-            graphics::draw(
-                ctx,
-                &(self.kiwi.borrow().0),
-                graphics::DrawParam::default().dest(p.0),
-            )?;
-        }*/
         Ok(())
     }
 
